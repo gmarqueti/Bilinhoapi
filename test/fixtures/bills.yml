@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  value: 1.5
+  due_date: 2024-01-05
+  billing_id: 1
+  status: MyString
+
+two:
+  value: 1.5
+  due_date: 2024-01-05
+  billing_id: 1
+  status: MyString
