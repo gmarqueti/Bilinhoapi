@@ -1,10 +1,7 @@
 class Student < ApplicationRecord
-    validates :name, :cpf, :gender, :method_type, presence: true
-    validates :name, :cpf, uniqueness: true
-    validates :name, :cpf, absence: true
-    validates :cpf, numericality: { only_integer: true }
-    validates :gender, inclusion: { in: %w(M F),
-    message: "%{value} is not a valid gender" }
-    validates :method_type, inclusion: { in: %w(Boleto Cartão),
-    message: "%{value} is not a valid method_type" }
+    validates :name, presence: true, uniqueness: true
+    validates :cpf, presence: true, uniqueness: true, numericality: { only_integer: true }, length: { is: 11 }
+    validates :gender, presence: true, inclusion: { in: %w(M F) }
+    validates :method_type, presence: true, inclusion: { in: %w(Boleto Cartão) }
+    validates :phone, numericality: { only_integer: true, allow_nil: true }
 end

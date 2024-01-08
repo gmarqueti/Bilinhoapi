@@ -1,8 +1,5 @@
 class Institution < ApplicationRecord
-    validates :name, :cnpj, :kind, presence: true
-    validates :name, :cnpj, uniqueness: true
-    validates :cnpj, numericality: { only_integer: true }
-    validates :name, absence: true
-    validates :kind, inclusion: { in: %w(Universidade Escola Creche),
-    message: "%{value} is not a valid type" }
+    validates :name, presence: true, uniqueness: true
+    validates :cnpj, presence: true, uniqueness: true, numericality: { only_integer: true }, length: { is: 14 }
+    validates :kind, presence: true, inclusion: { in: %w[Universidade Escola Creche] }
 end
