@@ -11,15 +11,16 @@ class Billing < ApplicationRecord
     after_create :bill_create
 
     private 
+    
     def bill_create
-
-    #Bill(id: integer, value: float, due_date: date, billing_id: integer, status: string) colunas Bill
-
         bill_value = total_value/installments #total de faturas
+        
+        today_day= Date.today.day
 
-        if due_day <= Date.today
-            due_day = due_day.next_month #se a data de vencimento for menor ou igual a data de hoje, ele joga o vencimento para o próximo mês
-            
+        if due_day <= today_day
+            due_day = due_day.next_month.strftime("#{due_day}/%m/%Y").to_date
+        end
+
         while Bill.find_by(due_date: due_day, billing_id: id).present?
             due_day = due_day.next_month  # Se encontrar data de vencimento igual a due day, atualiza para o próximo mês
         end
