@@ -1,8 +1,10 @@
 class Bill < ApplicationRecord
-validates :value, :due_date, :billing_id, :status, presence: true
-validates :status, inclusion: { in: %w(Aberta Atrasada Paga),
-message: "%{value} is not a valid status" }
+validates :value, presence: true
+validates :due_date, presence: true
+validates :billing_id, presence: true
+validates :status, inclusion: { in: %w(Aberta Atrasada Paga) }, presence: true
 
+before_validation :status_default
 
 private
   def status_default
