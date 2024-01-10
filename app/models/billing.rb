@@ -1,3 +1,5 @@
+require 'date'
+
 class Billing < ApplicationRecord
     belongs_to :institution
     belongs_to :student
@@ -14,11 +16,13 @@ class Billing < ApplicationRecord
     
     def bill_create
         bill_value = total_value/installments #total de faturas
-        
-        today_day= Date.today.day
+        today_day = Date.today.day
+        due_day = self.due_day.to_i #garantindo que due_day é um inteiro
 
         if due_day <= today_day
-            due_day = due_day.next_month.strftime("#{due_day}/%m/%Y").to_date
+            due_day = Date.new(Date.today.year, Date.today.month + 1, due_day)
+        else
+            due_day = Date.new(Date.today.year, Date.today.month, due_day)
         end
 
         while Bill.find_by(due_date: due_day, billing_id: id).present?
@@ -26,10 +30,10 @@ class Billing < ApplicationRecord
         end
 
         Bill.create(value:bill_value,due_date:due_day,billing_id: id) #cria a primeira fatura 
-        installments -= 1
+        self.installments -= 1
 
         i= 0
-        while i < installments do #estrutura de repetição para criar a quantidade de faturas restantes
+        while i < self.installments do #estrutura de repetição para criar a quantidade de faturas restantes
             due_day = due_day.next_month
             Bill.create(value:bill_value,due_date:due_day,billing_id: id)
             i += 1
